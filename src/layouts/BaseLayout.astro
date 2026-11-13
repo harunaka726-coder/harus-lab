@@ -3,7 +3,8 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Reveal from '../components/Reveal.astro';
 import ImageLightbox from '../components/ImageLightbox.astro';
-import { t, type Lang } from '../i18n/ui';
+import { t, langCodes, localizedPath, stripLangPrefix, type Lang } from '../i18n/ui';
+import { siteUrl, siteName, gaMeasurementId, adsenseClient } from '../config/site';
 import '../styles/global.css';
 
 interface Props {
@@ -15,16 +16,42 @@ interface Props {
 const { lang, title, description } = Astro.props;
 const pageTitle = title ? `${title} · ${t(lang, 'siteName')}` : t(lang, 'siteName');
 const desc = description ?? t(lang, 'tagline');
+const canonicalPath = stripLangPrefix(Astro.url.pathname);
+const canonical = new URL(localizedPath(lang, canonicalPath === '' ? '/' : canonicalPath), siteUrl).href;
+const ogImage = new URL('/featuregraphic/time-capsule-quiz.png', siteUrl).href;
+const hreflangs = langCodes.map((code) => ({
+  code: code === 'zh' ? 'zh-Hans' : code,
+  href: new URL(localizedPath(code, canonicalPath === '' ? '/' : canonicalPath), siteUrl).href,
+}));
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={lang === 'zh' ? 'zh-Hans' : lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={desc} />
     <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonical} />
+    {
+      hreflangs.map(({ code, href }) => (
+        <link rel="alternate" hreflang={code} href={href} />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={new URL(localizedPath('ja', canonicalPath === '' ? '/' : canonicalPath), siteUrl).href} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={lang === 'ja' ? 'ja_JP' : lang === 'zh' ? 'zh_CN' : lang === 'es' ? 'es_ES' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={desc} />
+    <meta name="twitter:image" content={ogImage} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -32,6 +59,30 @@ const desc = description ?? t(lang, 'tagline');
       rel="stylesheet"
     />
     <title>{pageTitle}</title>
+    {
+      gaMeasurementId && (
+        <>
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`} />
+          <script is:inline define:vars={{ gaMeasurementId }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+              dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+            gtag('config', gaMeasurementId);
+          </script>
+        </>
+      )
+    }
+    {
+      adsenseClient && (
+        <script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`}
+          crossorigin="anonymous"
+        />
+      )
+    }
   </head>
   <body>
     <div class="site-shell">

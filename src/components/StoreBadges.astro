@@ -40,8 +40,32 @@ const { appStore, playStore, webUrl } = Astro.props;
         </a>
       )}
       {webUrl && (
-        <a class="btn btn-ghost" href={webUrl} target="_blank" rel="noopener noreferrer">
-          URL
+        <a
+          class="web-link-btn"
+          href={webUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Open website"
+          title="Open website"
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <path
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M10 13a5 5 0 0 0 7.07 0l1.41-1.41a5 5 0 0 0-7.07-7.07L10 5.93"
+            />
+            <path
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M14 11a5 5 0 0 0-7.07 0L5.52 12.41a5 5 0 0 0 7.07 7.07L14 18.07"
+            />
+          </svg>
         </a>
       )}
     </div>
