@@ -1,0 +1,37 @@
+---
+import { localizedPath, type Lang } from '../i18n/ui';
+import { workTitle, workPathId, workIcon, type Work } from '../lib/works';
+
+interface Props {
+  lang: Lang;
+  prev: Work | null;
+  next: Work | null;
+}
+
+const { lang, prev, next } = Astro.props;
+---
+
+{
+  (prev || next) && (
+    <nav class="work-pager" aria-label="Works">
+      {prev ? (
+        <a class="work-pager-link work-pager-prev" href={localizedPath(lang, `/works/${workPathId(prev)}`)}>
+          <span class="work-pager-arrow" aria-hidden="true">◀</span>
+          <img class="work-pager-icon" src={workIcon(prev)} alt="" width="36" height="36" />
+          <span class="work-pager-title">{workTitle(prev, lang)}</span>
+        </a>
+      ) : (
+        <span />
+      )}
+      {next ? (
+        <a class="work-pager-link work-pager-next" href={localizedPath(lang, `/works/${workPathId(next)}`)}>
+          <span class="work-pager-title">{workTitle(next, lang)}</span>
+          <img class="work-pager-icon" src={workIcon(next)} alt="" width="36" height="36" />
+          <span class="work-pager-arrow" aria-hidden="true">▶</span>
+        </a>
+      ) : (
+        <span />
+      )}
+    </nav>
+  )
+}

@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { t, type Lang } from '../i18n/ui';
+
+const lang: Lang = 'ja';
+---
+
+<BaseLayout lang={lang} title={t(lang, 'privacyTitle')}>
+  <section class="section wrap fade-in prose">
+    <h1 class="page-title">{t(lang, 'privacyTitle')}</h1>
+    <p>最終更新日: 2026-11-13</p>
+    <p>
+      本ウェブサイト（以下「当サイト」）は Haru Nakajima が運営しています。当サイトでは、より良い体験の提供や運営のため、アクセス解析や将来的な広告配信（Google AdSense 等）を利用する場合があります。
+    </p>
+    <h2>収集する情報</h2>
+    <p>
+      Cookie や類似技術により、ブラウザの種類、訪問日時、閲覧ページ、おおまかな地域などの情報が自動的に収集されることがあります。お問い合わせフォームを利用する場合、送信内容に含まれる情報が収集されます。
+    </p>
+    <h2>広告について</h2>
+    <p>
+      Google 等の第三者配信事業者が Cookie を使用して、ユーザーの当サイトや他のウェブサイトへの過去のアクセス情報に基づいて広告を配信することがあります。ユーザーは
+      <a href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer">Google の広告設定</a>
+      でパーソナライズ広告を無効にできます。
+    </p>
+    <h2>データの利用目的</h2>
+    <ul>
+      <li>サイトの改善・不正利用の防止</li>
+      <li>お問い合わせへの回答</li>
+      <li>広告の配信および効果測定（導入後）</li>
+    </ul>
+    <h2>お問い合わせ</h2>
+    <p>本ポリシーに関するお問い合わせは、Contact ページのフォームよりご連絡ください。</p>
+  </section>
+</BaseLayout>

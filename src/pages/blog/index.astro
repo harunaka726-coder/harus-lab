@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { t, localizedPath, type Lang } from '../../i18n/ui';
+import { getPostsSorted, postTitle, postExcerpt, postPathId } from '../../lib/blog';
+
+const lang: Lang = 'ja';
+const posts = await getPostsSorted();
+---
+
+<BaseLayout lang={lang} title={t(lang, 'navBlog')}>
+  <section class="section wrap fade-in">
+    <h1 class="page-title">{t(lang, 'navBlog')}</h1>
+    <p class="page-lead">個人開発や日々のメモを残します。</p>
+    {
+      posts.length === 0 ? (
+        <p>{t(lang, 'emptyBlog')}</p>
+      ) : (
+        <ul class="rule-list">
+          {posts.map((post) => (
+            <li>
+              <a class="rule-item reveal" href={localizedPath(lang, `/blog/${postPathId(post)}`)}>
+                <span class="rule-meta">{post.data.date.toISOString().slice(0, 10)}</span>
+                <div>
+                  <h2 class="rule-title">{postTitle(post, lang)}</h2>
+                  <p class="rule-summary">{postExcerpt(post, lang)}</p>
+                </div>
+                <span class="rule-meta">→</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+</BaseLayout>

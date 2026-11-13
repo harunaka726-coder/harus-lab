@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import { t, type Lang } from '../../i18n/ui';
+
+const lang: Lang = 'es';
+---
+
+<BaseLayout lang={lang} title={t(lang, 'contactTitle')}>
+  <section class="section wrap fade-in">
+    <h1 class="page-title">{t(lang, 'contactTitle')}</h1>
+    <p class="page-lead">{t(lang, 'contactLead')}</p>
+    <ContactForm lang={lang} />
+  </section>
+</BaseLayout>

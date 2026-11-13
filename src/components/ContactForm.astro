@@ -1,0 +1,73 @@
+---
+import { t, type Lang } from '../i18n/ui';
+import { contactEmail } from '../config/site';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const action = `https://formsubmit.co/ajax/${encodeURIComponent(contactEmail)}`;
+---
+
+<div
+  class="contact-form-wrap"
+  data-ok={t(lang, 'contactSuccess')}
+  data-ng={t(lang, 'contactError')}
+>
+  <form class="contact-form" id="contact-form" method="POST" data-action={action}>
+    <input type="hidden" name="_subject" value="Haru's Lab — Contact" />
+    <input type="hidden" name="_template" value="table" />
+    <input type="text" name="_honey" class="contact-honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+    <label class="contact-field">
+      <span>{t(lang, 'contactName')}</span>
+      <input type="text" name="name" required autocomplete="name" />
+    </label>
+
+    <label class="contact-field">
+      <span>{t(lang, 'contactEmail')}</span>
+      <input type="email" name="email" required autocomplete="email" />
+    </label>
+
+    <label class="contact-field">
+      <span>{t(lang, 'contactMessage')}</span>
+      <textarea name="message" rows="6" required></textarea>
+    </label>
+
+    <button class="btn" type="submit">{t(lang, 'contactSubmit')}</button>
+    <p class="contact-status" id="contact-status" hidden></p>
+  </form>
+</div>
+
+<script>
+  const wrap = document.querySelector('.contact-form-wrap');
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const status = document.getElementById('contact-status');
+  if (wrap && form && status) {
+    const action = form.dataset.action!;
+    const ok = wrap.getAttribute('data-ok') || 'Sent. Thank you!';
+    const ng = wrap.getAttribute('data-ng') || 'Could not send. Please try again.';
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+      if (btn) btn.disabled = true;
+      status.hidden = false;
+      status.textContent = '…';
+      try {
+        const res = await fetch(action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        if (!res.ok) throw new Error('fail');
+        form.reset();
+        status.textContent = ok;
+      } catch {
+        status.textContent = ng;
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    });
+  }
+</script>

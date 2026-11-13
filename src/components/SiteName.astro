@@ -1,0 +1,12 @@
+---
+interface Props {
+  class?: string;
+  as?: 'span' | 'h1';
+}
+
+const { class: className = '', as: Tag = 'span' } = Astro.props;
+---
+
+<Tag class:list={['site-name', className]}>
+  Haru<span class="brand-apos" aria-hidden="true">'</span>s Lab
+</Tag>

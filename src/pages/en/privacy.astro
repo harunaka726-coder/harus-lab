@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { t, type Lang } from '../../i18n/ui';
+
+const lang: Lang = 'en';
+---
+
+<BaseLayout lang={lang} title={t(lang, 'privacyTitle')}>
+  <section class="section wrap fade-in prose">
+    <h1 class="page-title">{t(lang, 'privacyTitle')}</h1>
+    <p>Last updated: 2026-11-13</p>
+    <p>
+      This website is operated by Haru Nakajima. We may use analytics and, in the future, advertising
+      services such as Google AdSense.
+    </p>
+    <h2>Information we collect</h2>
+    <p>
+      Cookies and similar technologies may collect browser type, visit time, pages viewed, and approximate
+      region. If you use the contact form, the information you submit is collected.
+    </p>
+    <h2>Advertising</h2>
+    <p>
+      Third-party vendors, including Google, may use cookies to serve ads based on prior visits to this
+      or other websites. You can opt out of personalized advertising in
+      <a href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer">Google Ads Settings</a>.
+    </p>
+    <h2>How we use information</h2>
+    <ul>
+      <li>Improve the site and prevent abuse</li>
+      <li>Respond to inquiries</li>
+      <li>Serve and measure ads (after adoption)</li>
+    </ul>
+    <h2>Contact</h2>
+    <p>For privacy questions, use the form on the Contact page.</p>
+  </section>
+</BaseLayout>

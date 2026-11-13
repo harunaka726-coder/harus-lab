@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { t, localizedPath, type Lang } from '../../../i18n/ui';
+import {
+  getFeaturedWorks,
+  getOtherWorks,
+  workTitle,
+  workSummary,
+  workPathId,
+  workIcon,
+} from '../../../lib/works';
+
+const lang: Lang = 'zh';
+const featured = await getFeaturedWorks();
+const others = await getOtherWorks();
+---
+
+<BaseLayout lang={lang} title={t(lang, 'navWorks')}>
+  <section class="section wrap fade-in">
+    <h1 class="page-title">{t(lang, 'featuredWorks')}</h1>
+    <div class="app-gallery">
+      {
+        featured.map((work) => (
+          <a class="app-tile reveal" href={localizedPath(lang, `/works/${workPathId(work)}`)}>
+            <img class="app-icon" src={workIcon(work)} alt="" width="100" height="100" />
+            <div>
+              <h2 class="app-tile-title">{workTitle(work, lang)}</h2>
+              <p class="app-tile-meta">{workSummary(work, lang)}</p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <div class="section-head reveal">
+      <h2 class="section-title">{t(lang, 'othersWorks')}</h2>
+    </div>
+    <ul class="others-list">
+      {
+        others.map((work) => (
+          <li>
+            <a class="others-item reveal" href={localizedPath(lang, `/works/${workPathId(work)}`)}>
+              <span class="others-item-main">
+                <img class="others-icon" src={workIcon(work)} alt="" width="36" height="36" />
+                {workTitle(work, lang)}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>

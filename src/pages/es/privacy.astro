@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { t, type Lang } from '../../i18n/ui';
+
+const lang: Lang = 'es';
+---
+
+<BaseLayout lang={lang} title={t(lang, 'privacyTitle')}>
+  <section class="section wrap fade-in prose">
+    <h1 class="page-title">{t(lang, 'privacyTitle')}</h1>
+    <p>Última actualización: 2026-11-13</p>
+    <p>
+      Este sitio web (en adelante, «el Sitio») es operado por Haru Nakajima. Podemos usar herramientas de
+      análisis y, en el futuro, servicios de publicidad como Google AdSense para mejorar la experiencia y
+      sostener el Sitio.
+    </p>
+    <h2>Información que recopilamos</h2>
+    <p>
+      Mediante cookies y tecnologías similares pueden recopilarse de forma automática el tipo de
+      navegador, la fecha y hora de la visita, las páginas vistas y una región aproximada. Si usas el
+      formulario de contacto, se recopila la información que envías.
+    </p>
+    <h2>Publicidad</h2>
+    <p>
+      Proveedores externos, incluido Google, pueden usar cookies para mostrar anuncios basados en visitas
+      previas a este u otros sitios. Puedes desactivar la publicidad personalizada en
+      <a href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer">la configuración de anuncios de Google</a>.
+    </p>
+    <h2>Finalidad del uso</h2>
+    <ul>
+      <li>Mejorar el Sitio y prevenir usos indebidos</li>
+      <li>Responder a consultas</li>
+      <li>Servir y medir anuncios (tras su adopción)</li>
+    </ul>
+    <h2>Contacto</h2>
+    <p>Para preguntas sobre privacidad, usa el formulario de la página Contact.</p>
+  </section>
+</BaseLayout>

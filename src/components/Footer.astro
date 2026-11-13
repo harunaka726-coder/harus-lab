@@ -1,0 +1,21 @@
+---
+import { t, localizedPath, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p>&copy; {year} Haru Nakajima</p>
+    <div class="footer-links">
+      <a href="https://note.com/nice_acacia5247" target="_blank" rel="noopener noreferrer">{t(lang, 'footerNote')}</a>
+      <a href={localizedPath(lang, '/privacy')}>{t(lang, 'footerPrivacy')}</a>
+      <span>{t(lang, 'footerSocial')}</span>
+    </div>
+  </div>
+</footer>

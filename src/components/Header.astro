@@ -1,0 +1,65 @@
+---
+import SiteName from './SiteName.astro';
+import {
+  t,
+  localizedPath,
+  worksAnchor,
+  type Lang,
+  stripLangPrefix,
+  langCodes,
+} from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const path = stripLangPrefix(Astro.url.pathname);
+const links = [
+  { href: worksAnchor(lang), label: t(lang, 'navWorks'), match: '/#works' },
+  { href: localizedPath(lang, '/blog'), label: t(lang, 'navBlog'), match: '/blog' },
+  { href: localizedPath(lang, '/about'), label: t(lang, 'navAbout'), match: '/about' },
+  { href: localizedPath(lang, '/contact'), label: t(lang, 'navContact'), match: '/contact' },
+];
+const langLabels: Record<Lang, string> = {
+  ja: 'JA',
+  en: 'EN',
+  es: 'ES',
+  zh: 'ZH',
+};
+---
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href={localizedPath(lang, '/')}><SiteName /></a>
+    <nav class="nav" aria-label="Primary">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            aria-current={
+              link.match === '/#works'
+                ? path === '/' || path.startsWith('/works')
+                  ? 'page'
+                  : undefined
+                : path === link.match || path.startsWith(`${link.match}/`)
+                  ? 'page'
+                  : undefined
+            }
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <div class="lang-switch" aria-label="Language">
+        {
+          langCodes.map((code) => (
+            <a class={lang === code ? 'active' : undefined} href={localizedPath(code, path)}>
+              {langLabels[code]}
+            </a>
+          ))
+        }
+      </div>
+    </nav>
+  </div>
+</header>

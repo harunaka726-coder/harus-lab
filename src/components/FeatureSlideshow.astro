@@ -1,0 +1,106 @@
+---
+interface Slide {
+  slug: string;
+  src: string;
+  href: string;
+}
+
+interface Props {
+  slides: Slide[];
+}
+
+const { slides } = Astro.props;
+---
+
+{
+  slides.length > 0 && (
+    <div class="feature-slideshow" data-count={slides.length}>
+      <div class="feature-track">
+        {slides.map((slide, i) => (
+          <a
+            class:list={['feature-slide', { active: i === 0 }]}
+            href={slide.href}
+            data-index={i}
+            aria-label={slide.slug}
+          >
+            <img src={slide.src} alt="" loading={i === 0 ? 'eager' : 'lazy'} />
+          </a>
+        ))}
+      </div>
+
+      <button class="feature-nav feature-prev" type="button" aria-label="Previous">
+        ◀
+      </button>
+      <button class="feature-nav feature-next" type="button" aria-label="Next">
+        ▶
+      </button>
+
+      <div class="feature-dots" role="tablist" aria-label="Slides">
+        {slides.map((_, i) => (
+          <button
+            class:list={['feature-dot', { active: i === 0 }]}
+            type="button"
+            data-index={i}
+            aria-label={`Slide ${i + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+<script>
+  const root = document.querySelector('.feature-slideshow') as HTMLElement | null;
+  if (root) {
+    const slides = Array.from(root.querySelectorAll('.feature-slide'));
+    const dots = Array.from(root.querySelectorAll('.feature-dot'));
+    const prev = root.querySelector('.feature-prev');
+    const next = root.querySelector('.feature-next');
+    let i = 0;
+    let timer: ReturnType<typeof setInterval> | undefined;
+
+    const show = (nextIndex: number) => {
+      slides[i]?.classList.remove('active');
+      dots[i]?.classList.remove('active');
+      i = (nextIndex + slides.length) % slides.length;
+      slides[i]?.classList.add('active');
+      dots[i]?.classList.add('active');
+    };
+
+    const restart = () => {
+      if (timer) clearInterval(timer);
+      if (slides.length > 1) {
+        timer = setInterval(() => show(i + 1), 4200);
+      }
+    };
+
+    prev?.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      show(i - 1);
+      restart();
+    });
+    next?.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      show(i + 1);
+      restart();
+    });
+    dots.forEach((dot) => {
+      dot.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const idx = Number((dot as HTMLElement).dataset.index || 0);
+        show(idx);
+        restart();
+      });
+    });
+
+    root.addEventListener('mouseenter', () => {
+      if (timer) clearInterval(timer);
+    });
+    root.addEventListener('mouseleave', () => restart());
+
+    restart();
+  }
+</script>

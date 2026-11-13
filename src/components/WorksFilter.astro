@@ -1,0 +1,25 @@
+---
+---
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const current = params.get('c');
+  const chips = document.querySelectorAll<HTMLAnchorElement>('[data-works-chip]');
+  const items = document.querySelectorAll<HTMLElement>('[data-works-item]');
+
+  chips.forEach((chip) => {
+    const value = chip.dataset.worksChip || '';
+    if ((!current && value === 'all') || current === value) {
+      chip.classList.add('active');
+      chip.setAttribute('aria-current', 'true');
+    } else {
+      chip.classList.remove('active');
+      chip.removeAttribute('aria-current');
+    }
+  });
+
+  if (current) {
+    items.forEach((item) => {
+      item.hidden = item.dataset.category !== current;
+    });
+  }
+</script>

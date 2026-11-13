@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { t, localizedPath, type Lang } from '../../../i18n/ui';
+import { getPostsSorted, postTitle, postExcerpt, postPathId } from '../../../lib/blog';
+import { render } from 'astro:content';
+
+const lang: Lang = 'en';
+
+export async function getStaticPaths() {
+  const posts = await getPostsSorted();
+  return posts.map((post) => ({
+    params: { slug: postPathId(post) },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const localizedBody = post.data.bodyEn;
+const { Content } = localizedBody ? { Content: null } : await render(post);
+---
+
+<BaseLayout lang={lang} title={postTitle(post, lang)} description={postExcerpt(post, lang)}>
+  <article class="section wrap fade-in prose">
+    <p class="rule-meta">{post.data.date.toISOString().slice(0, 10)}</p>
+    <h1 class="page-title">{postTitle(post, lang)}</h1>
+    <p class="page-lead">{postExcerpt(post, lang)}</p>
+    {localizedBody ? <p>{localizedBody}</p> : Content && <Content />}
+    {
+      post.data.noteUrl && (
+        <p>
+          <a href={post.data.noteUrl} target="_blank" rel="noopener noreferrer">
+            {t(lang, 'noteCredit')}
+          </a>
+        </p>
+      )
+    }
+    <p><a href={localizedPath(lang, '/blog')}>{t(lang, 'allPosts')}</a></p>
+  </article>
+</BaseLayout>

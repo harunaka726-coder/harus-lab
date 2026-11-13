@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { t, type Lang } from '../../i18n/ui';
+
+const lang: Lang = 'zh';
+---
+
+<BaseLayout lang={lang} title={t(lang, 'privacyTitle')}>
+  <section class="section wrap fade-in prose">
+    <h1 class="page-title">{t(lang, 'privacyTitle')}</h1>
+    <p>最后更新：2026-11-13</p>
+    <p>
+      本网站（以下简称「本站」）由 Haru Nakajima 运营。为改善体验与维持运营，本站可能使用访问分析，并在将来使用
+      Google AdSense 等广告服务。
+    </p>
+    <h2>我们收集的信息</h2>
+    <p>
+      通过 Cookie 及类似技术，可能会自动收集浏览器类型、访问时间、浏览页面以及大致地区等信息。若使用联系表单，则会收集你提交的内容。
+    </p>
+    <h2>关于广告</h2>
+    <p>
+      包括 Google 在内的第三方广告服务商可能使用 Cookie，根据你对本站或其他网站的访问记录投放广告。你可以在
+      <a href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer">Google 广告设置</a>
+      中关闭个性化广告。
+    </p>
+    <h2>使用目的</h2>
+    <ul>
+      <li>改进网站、防止滥用</li>
+      <li>回复咨询</li>
+      <li>投放并衡量广告效果（引入后）</li>
+    </ul>
+    <h2>联系我们</h2>
+    <p>隐私相关问题，请通过 Contact 页面的表单联系。</p>
+  </section>
+</BaseLayout>

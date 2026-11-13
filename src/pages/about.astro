@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { t, localizedPath, type Lang } from '../i18n/ui';
+
+const lang: Lang = 'ja';
+---
+
+<BaseLayout lang={lang} title={t(lang, 'aboutTitle')}>
+  <section class="section wrap fade-in prose">
+    <h1 class="page-title">{t(lang, 'aboutTitle')}</h1>
+    <p class="page-lead">Haru's Lab</p>
+    <p>
+      おもしろいアイデア、便利なアプリ、小さな実験をテーマに、アプリとウェブサービスをつくっているラボです。
+    </p>
+    <p>
+      作品は Works に、文章は Blog と
+      <a href="https://note.com/nice_acacia5247" target="_blank" rel="noopener noreferrer">Note</a>
+      に残しています。運営者名はフッターのクレジットに記載しています。
+    </p>
+    <div class="cta-row">
+      <a class="btn" href={localizedPath(lang, '/')}>{t(lang, 'navHome')}</a>
+      <a class="btn btn-ghost" href={localizedPath(lang, '/contact')}>{t(lang, 'navContact')}</a>
+    </div>
+  </section>
+</BaseLayout>

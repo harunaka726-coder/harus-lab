@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StoreBadges from '../../components/StoreBadges.astro';
+import WorkPager from '../../components/WorkPager.astro';
+import { t, localizedPath, type Lang } from '../../i18n/ui';
+import {
+  getWorksSorted,
+  getWorkNeighbors,
+  workTitle,
+  workPathId,
+  workIcon,
+  workScreenshots,
+  resolveImageColumns,
+  categoryLabel,
+} from '../../lib/works';
+import { renderMarkdocHtml } from '../../lib/markdocHtml';
+import { render } from 'astro:content';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const lang: Lang = 'ja';
+
+export async function getStaticPaths() {
+  const works = await getWorksSorted();
+  return works.map((work) => ({
+    params: { slug: workPathId(work) },
+    props: { work },
+  }));
+}
+
+const { work } = Astro.props;
+const shots = workScreenshots(work, lang);
+const cols = resolveImageColumns(work, shots.length);
+const { prev, next } = await getWorkNeighbors(work);
+
+const rawPath = path.resolve('src/content/works', `${workPathId(work)}.mdoc`);
+const raw = fs.existsSync(rawPath) ? fs.readFileSync(rawPath, 'utf8') : '';
+const body = raw.replace(/^---[\s\S]*?---\s*/, '');
+const bodyHtml = renderMarkdocHtml(body);
+const useHtml = Boolean(bodyHtml);
+const { Content } = useHtml ? { Content: null } : await render(work);
+---
+
+<BaseLayout lang={lang} title={workTitle(work, lang)} description={work.data.summary}>
+  <article class={`section wrap fade-in prose prose-cols-${cols}`}>
+    <div class="detail-hero">
+      <img class="detail-icon" src={workIcon(work)} alt="" width="120" height="120" />
+      <div>
+        <p class="rule-meta">{categoryLabel(lang, work.data.category)}</p>
+        <h1 class="page-title">{workTitle(work, lang)}</h1>
+        <p class="page-lead">{work.data.summary}</p>
+        <p>
+          <strong>{t(lang, 'platforms')}</strong>
+          {work.data.platforms.join(' / ')}
+        </p>
+        <StoreBadges
+          appStore={work.data.appStore}
+          playStore={work.data.playStore}
+          webUrl={work.data.webUrl}
+        />
+      </div>
+    </div>
+
+    <WorkPager lang={lang} prev={prev} next={next} />
+
+    {useHtml ? <div set:html={bodyHtml} /> : Content && <Content />}
+
+    {
+      shots.length > 0 && (
+        <div class={`shot-grid shot-cols-${cols}`}>
+          {shots.map((src) => (
+            <img src={src} alt="" loading="lazy" />
+          ))}
+        </div>
+      )
+    }
+
+    <WorkPager lang={lang} prev={prev} next={next} />
+    <div class="work-links">
+      <a class="btn btn-ghost" href={localizedPath(lang, '/')}>{t(lang, 'navHome')}</a>
+    </div>
+  </article>
+</BaseLayout>
