@@ -4,11 +4,8 @@ export const contactEmail = 'harunaka726@gmail.com';
 export const siteUrl = 'https://harunakajima.com';
 export const siteName = "Haru's Lab";
 
-/**
- * Google Analytics 4 measurement ID (e.g. G-XXXXXXXX).
- * Create a GA4 property for harunakajima.com, then paste the ID here.
- */
-export const gaMeasurementId = '';
+/** Google Tag Manager container ID */
+export const gtmId = 'GTM-M9F69WDR';
 
 /**
  * Google AdSense client ID (ca-pub-…).
