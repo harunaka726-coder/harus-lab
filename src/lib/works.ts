@@ -85,6 +85,18 @@ export function workTitle(work: Work, lang: Lang) {
   return work.data.title;
 }
 
+/** Compact label for prev/next pager (avoids overflow on mobile). */
+export function workPagerTitle(work: Work, lang: Lang) {
+  const id = workPathId(work);
+  if (id === 'goo-choki-paa') {
+    if (lang === 'ja') return 'グーチョキパー';
+    if (lang === 'zh') return '剪刀石头布';
+    if (lang === 'es') return 'Piedra, papel…';
+    return 'RPS Simulator';
+  }
+  return workTitle(work, lang);
+}
+
 export function workSummary(work: Work, lang: Lang) {
   if (lang === 'en') return work.data.summaryEn || work.data.summary;
   if (lang === 'es') return work.data.summaryEs || work.data.summaryEn || work.data.summary;
