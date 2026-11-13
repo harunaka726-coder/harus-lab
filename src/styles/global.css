@@ -853,11 +853,22 @@ p {
   max-width: 36rem;
 }
 
+.shot-grid a {
+  display: block;
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
 .shot-grid img {
   width: 100%;
   height: auto;
   border: 1px solid var(--line);
   background: var(--paper);
+}
+
+.shot-grid a:hover img {
+  opacity: 0.92;
 }
 
 .zoomable {

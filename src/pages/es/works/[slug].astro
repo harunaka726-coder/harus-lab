@@ -66,9 +66,15 @@ const { Content } = useLocaleBody ? { Content: null } : await render(work);
     {
       shots.length > 0 && (
         <div class={`shot-grid shot-cols-${cols}`}>
-          {shots.map((src) => (
-            <img src={src} alt="" loading="lazy" />
-          ))}
+          {shots.map((src) =>
+            work.data.webUrl ? (
+              <a href={work.data.webUrl} target="_blank" rel="noopener noreferrer">
+                <img src={src} alt="" loading="lazy" />
+              </a>
+            ) : (
+              <img src={src} alt="" loading="lazy" />
+            ),
+          )}
         </div>
       )
     }

@@ -16,7 +16,9 @@
   const btnPrev = dialog?.querySelector('.lightbox-prev');
   const btnNext = dialog?.querySelector('.lightbox-next');
   if (dialog && imgEl) {
-    const selector = '.shot-grid img, article.prose p:has(> img:only-child) img';
+    // Linked shots (web apps) navigate instead of opening the lightbox
+    const selector =
+      '.shot-grid > img, article.prose p:has(> img:only-child) img';
     let sources: string[] = [];
     let index = 0;
     let touchX = 0;
