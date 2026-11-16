@@ -7,6 +7,7 @@ import {
   type Lang,
   stripLangPrefix,
   langCodes,
+  languages,
 } from '../i18n/ui';
 
 interface Props {
@@ -21,12 +22,6 @@ const links = [
   { href: localizedPath(lang, '/about'), label: t(lang, 'navAbout'), match: '/about' },
   { href: localizedPath(lang, '/contact'), label: t(lang, 'navContact'), match: '/contact' },
 ];
-const langLabels: Record<Lang, string> = {
-  ja: 'JA',
-  en: 'EN',
-  es: 'ES',
-  zh: 'ZH',
-};
 ---
 
 <header class="site-header">
@@ -51,15 +46,35 @@ const langLabels: Record<Lang, string> = {
           </a>
         ))
       }
-      <div class="lang-switch" aria-label="Language">
-        {
-          langCodes.map((code) => (
-            <a class={lang === code ? 'active' : undefined} href={localizedPath(code, path)}>
-              {langLabels[code]}
-            </a>
-          ))
-        }
-      </div>
+      <details class="lang-switch">
+        <summary class="lang-switch-summary" aria-label="Language">
+          <svg class="lang-globe" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.5"></circle>
+            <path
+              d="M3.5 12h17M12 3.5c2.4 2.6 3.6 5.5 3.6 8.5S14.4 17.9 12 20.5C9.6 17.9 8.4 15 8.4 12S9.6 6.1 12 3.5Z"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+            ></path>
+          </svg>
+          <span>Language</span>
+        </summary>
+        <div class="lang-switch-menu" role="list">
+          {
+            langCodes.map((code) => (
+              <a
+                role="listitem"
+                class={lang === code ? 'active' : undefined}
+                href={localizedPath(code, path)}
+                aria-current={lang === code ? 'true' : undefined}
+                lang={code === 'zh' ? 'zh-Hans' : code}
+              >
+                {languages[code]}
+              </a>
+            ))
+          }
+        </div>
+      </details>
     </nav>
   </div>
 </header>

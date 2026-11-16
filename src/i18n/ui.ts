@@ -2,9 +2,9 @@ export type Lang = 'ja' | 'en' | 'es' | 'zh';
 
 export const languages: Record<Lang, string> = {
   ja: '日本語',
-  en: 'English',
-  es: 'Español',
-  zh: '简体中文',
+  en: 'ENGLISH',
+  es: 'ESPAÑOL',
+  zh: '中文簡体',
 };
 
 export const langCodes: Lang[] = ['ja', 'en', 'es', 'zh'];
@@ -48,10 +48,10 @@ const ui = {
     contactSuccess: '送信しました。ありがとうございます。',
     contactError: '送信に失敗しました。時間をおいて再度お試しください。',
     privacyTitle: 'プライバシーポリシー',
-    footerNote: 'Note',
+    footerNote: 'note',
     footerPrivacy: 'Privacy',
     footerSocial: 'Social（準備中）',
-    noteCredit: '原文（Note）',
+    noteCredit: '原文（note）',
     filterAll: 'すべて',
     emptyBlog: '記事はまだありません。',
     workDetail: '作品詳細',
@@ -94,10 +94,10 @@ const ui = {
     contactSuccess: 'Sent. Thank you!',
     contactError: 'Could not send. Please try again later.',
     privacyTitle: 'Privacy Policy',
-    footerNote: 'Note',
+    footerNote: 'note',
     footerPrivacy: 'Privacy',
     footerSocial: 'Social (coming soon)',
-    noteCredit: 'Original on Note',
+    noteCredit: 'Original on note',
     filterAll: 'All',
     emptyBlog: 'No posts yet.',
     workDetail: 'Work detail',
@@ -140,10 +140,10 @@ const ui = {
     contactSuccess: 'Enviado. ¡Gracias!',
     contactError: 'No se pudo enviar. Inténtalo más tarde.',
     privacyTitle: 'Política de privacidad',
-    footerNote: 'Note',
+    footerNote: 'note',
     footerPrivacy: 'Privacy',
     footerSocial: 'Social (próximamente)',
-    noteCredit: 'Original en Note',
+    noteCredit: 'Original en note',
     filterAll: 'Todo',
     emptyBlog: 'Aún no hay entradas.',
     workDetail: 'Detalle',
@@ -186,10 +186,10 @@ const ui = {
     contactSuccess: '已发送，谢谢！',
     contactError: '发送失败，请稍后再试。',
     privacyTitle: '隐私政策',
-    footerNote: 'Note',
+    footerNote: 'note',
     footerPrivacy: 'Privacy',
     footerSocial: 'Social（准备中）',
-    noteCredit: '原文（Note）',
+    noteCredit: '原文（note）',
     filterAll: '全部',
     emptyBlog: '暂无文章。',
     workDetail: '作品详情',
@@ -214,23 +214,29 @@ export function getLangFromUrl(url: URL): Lang {
   return 'ja';
 }
 
+/** Path without locale prefix and without trailing slash (except `/`). */
 export function stripLangPrefix(pathname: string): string {
   const parts = pathname.split('/');
   const maybe = parts[1];
-  if (isLang(maybe) && maybe !== 'ja') {
-    const rest = '/' + parts.slice(2).join('/');
-    return rest === '/' ? '/' : rest.replace(/\/$/, '') || '/';
-  }
-  return pathname;
+  const rest =
+    isLang(maybe) && maybe !== 'ja' ? '/' + parts.slice(2).join('/') : pathname;
+  if (rest === '/' || rest === '') return '/';
+  return rest.replace(/\/$/, '') || '/';
 }
 
+function withTrailingSlash(path: string): string {
+  if (path === '/' || path === '') return '/';
+  return path.endsWith('/') ? path : `${path}/`;
+}
+
+/** Locale-aware href that always ends with `/` (matches Cloudflare Pages). */
 export function localizedPath(lang: Lang, path: string): string {
-  const clean = path.startsWith('/') ? path : `/${path}`;
-  if (lang === 'ja') return clean === '' ? '/' : clean;
-  if (clean === '/') return `/${lang}`;
-  return `/${lang}${clean}`;
+  const clean = (path.startsWith('/') ? path : `/${path}`).replace(/\/$/, '') || '/';
+  if (lang === 'ja') return withTrailingSlash(clean);
+  if (clean === '/') return withTrailingSlash(`/${lang}`);
+  return withTrailingSlash(`/${lang}${clean}`);
 }
 
 export function worksAnchor(lang: Lang): string {
-  return lang === 'ja' ? '/#works' : `/${lang}#works`;
+  return lang === 'ja' ? '/#works' : `/${lang}/#works`;
 }

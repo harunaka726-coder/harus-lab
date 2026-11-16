@@ -10,6 +10,7 @@ const isDev = process.env.NODE_ENV !== 'production';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://harunakajima.com',
+  trailingSlash: 'always',
   integrations: [
     react(),
     markdoc(),

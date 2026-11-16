@@ -121,6 +121,7 @@ p {
 .brand-apos {
   color: var(--brand-mark);
   font-weight: 700;
+  transition: color 0.85s ease;
 }
 
 .nav {
@@ -141,19 +142,57 @@ p {
 }
 
 .lang-switch {
+  position: relative;
+}
+
+.lang-switch-summary {
+  list-style: none;
   display: inline-flex;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
   border: 1px solid var(--line);
   background: var(--paper);
+  cursor: pointer;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
 }
 
-.lang-switch a {
-  padding: 0.2rem 0.45rem;
+.lang-switch-summary::-webkit-details-marker {
+  display: none;
+}
+
+.lang-globe {
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.lang-switch-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.35rem);
+  min-width: 9.5rem;
+  display: grid;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  z-index: 30;
+}
+
+.lang-switch-menu a {
+  padding: 0.45rem 0.7rem;
   text-decoration: none;
-  font-size: 0.72rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
 }
 
-.lang-switch a.active {
+.lang-switch-menu a:hover {
+  background: var(--bg-soft);
+}
+
+.lang-switch-menu a.active {
   background: var(--ink);
   color: var(--paper);
 }
