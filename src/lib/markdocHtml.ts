@@ -27,11 +27,24 @@ export function stripMarkdownImages(source: string): string {
     .trim();
 }
 
+/** Open absolute http(s) links in a new tab. */
+function withExternalLinkTargets(html: string): string {
+  return html.replace(
+    /<a\s+href="(https?:\/\/[^"]+)"([^>]*)>/gi,
+    (_match, href: string, rest: string) => {
+      const attrs = rest
+        .replace(/\s+target="[^"]*"/gi, '')
+        .replace(/\s+rel="[^"]*"/gi, '');
+      return `<a href="${href}" target="_blank" rel="noopener noreferrer"${attrs}>`;
+    },
+  );
+}
+
 /** Render a Markdoc/Markdown string (e.g. contentEn) to HTML. */
 export function renderMarkdocHtml(source: string | undefined | null): string {
   if (!source?.trim()) return '';
   const cleaned = normalizeBulletLines(stripMarkdownImages(source));
   const ast = Markdoc.parse(cleaned);
   const content = Markdoc.transform(ast);
-  return Markdoc.renderers.html(content);
+  return withExternalLinkTargets(Markdoc.renderers.html(content));
 }

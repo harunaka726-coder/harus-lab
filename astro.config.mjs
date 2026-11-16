@@ -10,7 +10,8 @@ const isDev = process.env.NODE_ENV !== 'production';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://harunakajima.com',
-  trailingSlash: 'always',
+  // Keep default `ignore`: `always` breaks Keystatic (/keystatic + /api/keystatic/*).
+  // Canonicals/internal links still use trailing slashes via localizedPath().
   integrations: [
     react(),
     markdoc(),

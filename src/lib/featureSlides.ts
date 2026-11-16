@@ -1,10 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { brandMarkForSlug } from '../config/brandMarks';
 
 export type FeatureSlide = {
   slug: string;
   src: string;
   placeholder: boolean;
+  mark: string;
 };
 
 export function featureImageForSlug(slug: string): FeatureSlide {
@@ -16,10 +18,16 @@ export function featureImageForSlug(slug: string): FeatureSlide {
         slug,
         src: `/featuregraphic/${name}`,
         placeholder: name.endsWith('.svg'),
+        mark: brandMarkForSlug(slug),
       };
     }
   }
-  return { slug, src: `/featuregraphic/${slug}.svg`, placeholder: true };
+  return {
+    slug,
+    src: `/featuregraphic/${slug}.svg`,
+    placeholder: true,
+    mark: brandMarkForSlug(slug),
+  };
 }
 
 /** Build slideshow entries in the same order as featured Works. */
