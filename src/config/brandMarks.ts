@@ -13,6 +13,7 @@ export const brandMarkBySlug: Record<string, string> = {
   'mens-cycle': '#E08520',
   logroom: '#738365',
   'goo-choki-paa': '#8E8A86',
+  henohenomoheji: '#18120E',
 };
 
 export const defaultBrandMark = brandMarkBySlug['time-capsule-quiz'] ?? '#D85A3A';

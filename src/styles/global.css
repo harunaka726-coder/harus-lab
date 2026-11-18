@@ -260,7 +260,6 @@ p {
 
 .feature-slide.active {
   opacity: 1;
-  pointer-events: auto;
   z-index: 1;
 }
 
@@ -270,34 +269,62 @@ p {
   object-fit: cover;
 }
 
-.feature-nav {
+.feature-hit {
   position: absolute;
-  top: 50%;
-  z-index: 3;
-  transform: translateY(-50%);
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.feature-hit-prev,
+.feature-hit-next {
+  width: 28%;
+  display: flex;
+  align-items: center;
+}
+
+.feature-hit-prev {
+  left: 0;
+  justify-content: flex-start;
+  padding-left: 0.85rem;
+}
+
+.feature-hit-next {
+  right: 0;
+  justify-content: flex-end;
+  padding-right: 0.85rem;
+}
+
+.feature-hit-center {
+  left: 28%;
+  width: 44%;
+  cursor: pointer;
+}
+
+.feature-hit-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 2.4rem;
   height: 2.4rem;
-  border: 0;
   border-radius: 999px;
   background: rgba(28, 25, 22, 0.55);
-  color: #fff;
   font-size: 0.75rem;
-  cursor: pointer;
   opacity: 0;
   transition: opacity 0.2s ease;
+  pointer-events: none;
 }
 
-.feature-slideshow:hover .feature-nav,
-.feature-slideshow:focus-within .feature-nav {
+.feature-slideshow:hover .feature-hit-label,
+.feature-slideshow:focus-within .feature-hit-label {
   opacity: 1;
-}
-
-.feature-prev {
-  left: 0.7rem;
-}
-
-.feature-next {
-  right: 0.7rem;
 }
 
 .feature-dots {
@@ -334,7 +361,7 @@ p {
 }
 
 @media (hover: none) {
-  .feature-nav,
+  .feature-hit-label,
   .feature-dots {
     opacity: 1;
   }

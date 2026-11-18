@@ -41,9 +41,9 @@ function listShotFiles(dir: string): string[] {
 }
 
 /**
- * Locale Play screenshots under public/works/{slug}/{lang}/.
- * Fallback for missing locales: en → ja → root (web services).
- * es/zh prefer English assets when that locale folder is empty.
+ * Locale Play screenshots under public/works/{slug}/{lang}/,
+ * or Keystatic arrays (screenshotsEn / Es / Zh / screenshots).
+ * Fallback: folder locale → Keystatic locale → en → ja → root → screenshots.
  */
 export function workScreenshots(work: Work, lang: Lang = 'ja') {
   const slug = workPathId(work);
@@ -55,13 +55,30 @@ export function workScreenshots(work: Work, lang: Lang = 'ja') {
     const dir = path.resolve('public/works', slug);
     return listShotFiles(dir).map((f) => `/works/${slug}/${f}`);
   };
+  const fromFrontmatter = (urls: string[] | undefined) =>
+    (urls ?? []).map((src) => publicAsset(src, '/screenshots'));
 
   const localized = listFrom(lang);
   if (localized.length) return localized;
 
-  if (lang === 'es' || lang === 'zh') {
-    const en = listFrom('en');
+  if (lang === 'en') {
+    const en = fromFrontmatter(work.data.screenshotsEn);
     if (en.length) return en;
+  }
+  if (lang === 'es') {
+    const es = fromFrontmatter(work.data.screenshotsEs);
+    if (es.length) return es;
+  }
+  if (lang === 'zh') {
+    const zh = fromFrontmatter(work.data.screenshotsZh);
+    if (zh.length) return zh;
+  }
+
+  if (lang === 'es' || lang === 'zh') {
+    const enFolder = listFrom('en');
+    if (enFolder.length) return enFolder;
+    const enFm = fromFrontmatter(work.data.screenshotsEn);
+    if (enFm.length) return enFm;
   }
   if (lang !== 'ja') {
     const ja = listFrom('ja');
@@ -75,7 +92,7 @@ export function workScreenshots(work: Work, lang: Lang = 'ja') {
   const root = rootList();
   if (root.length) return root;
 
-  return (work.data.screenshots ?? []).map((src) => publicAsset(src, '/screenshots'));
+  return fromFrontmatter(work.data.screenshots);
 }
 
 export function workTitle(work: Work, lang: Lang) {

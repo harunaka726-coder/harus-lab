@@ -40,6 +40,9 @@ const works = defineCollection({
     gallery: z.enum(['featured', 'others']).default('others'),
     icon: z.string().optional(),
     screenshots: z.array(z.string()).optional(),
+    screenshotsEn: z.array(z.string()).optional(),
+    screenshotsEs: z.array(z.string()).optional(),
+    screenshotsZh: z.array(z.string()).optional(),
     /** How many screenshots / body images per row (Keystatic may store string) */
     imageColumns: z.union([z.string(), z.number()]).optional(),
     appStore: z.string().url().optional(),

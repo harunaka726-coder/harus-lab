@@ -11,6 +11,7 @@ interface Props {
 }
 
 const { slides } = Astro.props;
+const firstHref = slides[0]?.href ?? '#';
 ---
 
 {
@@ -18,23 +19,24 @@ const { slides } = Astro.props;
     <div class="feature-slideshow" data-count={slides.length}>
       <div class="feature-track">
         {slides.map((slide, i) => (
-          <a
+          <div
             class:list={['feature-slide', { active: i === 0 }]}
-            href={slide.href}
             data-index={i}
             data-mark={slide.mark}
-            aria-label={slide.slug}
+            data-href={slide.href}
+            aria-hidden={i === 0 ? 'false' : 'true'}
           >
             <img src={slide.src} alt="" loading={i === 0 ? 'eager' : 'lazy'} />
-          </a>
+          </div>
         ))}
       </div>
 
-      <button class="feature-nav feature-prev" type="button" aria-label="Previous">
-        ◀
+      <button class="feature-hit feature-hit-prev" type="button" aria-label="Previous">
+        <span class="feature-hit-label" aria-hidden="true">◀</span>
       </button>
-      <button class="feature-nav feature-next" type="button" aria-label="Next">
-        ▶
+      <a class="feature-hit feature-hit-center" href={firstHref} aria-label="Open work"></a>
+      <button class="feature-hit feature-hit-next" type="button" aria-label="Next">
+        <span class="feature-hit-label" aria-hidden="true">▶</span>
       </button>
 
       <div class="feature-dots" role="tablist" aria-label="Slides">
@@ -56,8 +58,9 @@ const { slides } = Astro.props;
   if (root) {
     const slides = Array.from(root.querySelectorAll('.feature-slide'));
     const dots = Array.from(root.querySelectorAll('.feature-dot'));
-    const prev = root.querySelector('.feature-prev');
-    const next = root.querySelector('.feature-next');
+    const prev = root.querySelector('.feature-hit-prev');
+    const next = root.querySelector('.feature-hit-next');
+    const center = root.querySelector('.feature-hit-center') as HTMLAnchorElement | null;
     let i = 0;
     let timer: ReturnType<typeof setInterval> | undefined;
 
@@ -66,13 +69,21 @@ const { slides } = Astro.props;
       if (mark) document.documentElement.style.setProperty('--brand-mark', mark);
     };
 
+    const syncCenterLink = () => {
+      const href = (slides[i] as HTMLElement | undefined)?.dataset.href;
+      if (center && href) center.href = href;
+    };
+
     const show = (nextIndex: number) => {
       slides[i]?.classList.remove('active');
+      slides[i]?.setAttribute('aria-hidden', 'true');
       dots[i]?.classList.remove('active');
       i = (nextIndex + slides.length) % slides.length;
       slides[i]?.classList.add('active');
+      slides[i]?.setAttribute('aria-hidden', 'false');
       dots[i]?.classList.add('active');
       syncBrandMark();
+      syncCenterLink();
     };
 
     const restart = () => {
@@ -110,6 +121,7 @@ const { slides } = Astro.props;
     root.addEventListener('mouseleave', () => restart());
 
     syncBrandMark();
+    syncCenterLink();
     restart();
   }
 </script>

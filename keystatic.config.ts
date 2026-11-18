@@ -95,7 +95,40 @@ export default config({
             publicPath: '/screenshots/',
           }),
           {
-            label: 'Screenshots',
+            label: 'Screenshots (JA / fallback)',
+            itemLabel: (props) => (typeof props.value === 'string' ? props.value : 'screenshot'),
+          },
+        ),
+        screenshotsEn: fields.array(
+          fields.image({
+            label: 'Screenshot',
+            directory: 'public/works',
+            publicPath: '/works/',
+          }),
+          {
+            label: 'Screenshots (EN)',
+            itemLabel: (props) => (typeof props.value === 'string' ? props.value : 'screenshot'),
+          },
+        ),
+        screenshotsEs: fields.array(
+          fields.image({
+            label: 'Screenshot',
+            directory: 'public/works',
+            publicPath: '/works/',
+          }),
+          {
+            label: 'Screenshots (ES)',
+            itemLabel: (props) => (typeof props.value === 'string' ? props.value : 'screenshot'),
+          },
+        ),
+        screenshotsZh: fields.array(
+          fields.image({
+            label: 'Screenshot',
+            directory: 'public/works',
+            publicPath: '/works/',
+          }),
+          {
+            label: 'Screenshots (ZH)',
             itemLabel: (props) => (typeof props.value === 'string' ? props.value : 'screenshot'),
           },
         ),
