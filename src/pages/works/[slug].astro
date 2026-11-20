@@ -13,6 +13,7 @@ import {
   resolveImageColumns,
   categoryLabel,
 } from '../../lib/works';
+import { brandMarkForSlug } from '../../config/brandMarks';
 import { renderMarkdocHtml } from '../../lib/markdocHtml';
 import { render } from 'astro:content';
 import fs from 'node:fs';
@@ -29,6 +30,7 @@ export async function getStaticPaths() {
 }
 
 const { work } = Astro.props;
+const brandMark = brandMarkForSlug(workPathId(work));
 const shots = workScreenshots(work, lang);
 const cols = resolveImageColumns(work, shots.length);
 const { prev, next } = await getWorkNeighbors(work);
@@ -41,7 +43,7 @@ const useHtml = Boolean(bodyHtml);
 const { Content } = useHtml ? { Content: null } : await render(work);
 ---
 
-<BaseLayout lang={lang} title={workTitle(work, lang)} description={work.data.summary}>
+<BaseLayout lang={lang} title={workTitle(work, lang)} description={work.data.summary} brandMark={brandMark}>
   <article class={`section wrap fade-in prose prose-cols-${cols}`}>
     <div class="detail-hero">
       <img class="detail-icon" src={workIcon(work)} alt="" width="120" height="120" />

@@ -1,0 +1,12 @@
+# Keep icon/screenshot updates visible without waiting on long CDN/browser cache.
+/icons/*
+  Cache-Control: public, max-age=300, must-revalidate
+
+/featuregraphic/*
+  Cache-Control: public, max-age=300, must-revalidate
+
+/screenshots/*
+  Cache-Control: public, max-age=300, must-revalidate
+
+/works/*
+  Cache-Control: public, max-age=300, must-revalidate

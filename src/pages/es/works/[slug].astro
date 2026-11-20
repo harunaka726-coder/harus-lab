@@ -14,6 +14,7 @@ import {
   resolveImageColumns,
   categoryLabel,
 } from '../../../lib/works';
+import { brandMarkForSlug } from '../../../config/brandMarks';
 import { renderMarkdocHtml } from '../../../lib/markdocHtml';
 import { loadWorkContentLocale } from '../../../lib/workContentLocale';
 import { render } from 'astro:content';
@@ -33,13 +34,14 @@ const shots = workScreenshots(work, lang);
 const cols = resolveImageColumns(work, shots.length);
 const { prev, next } = await getWorkNeighbors(work);
 const slug = workPathId(work);
+const brandMark = brandMarkForSlug(slug);
 const localeSource = loadWorkContentLocale(slug, lang, work.data.contentEs);
 const localeHtml = renderMarkdocHtml(localeSource);
 const useLocaleBody = Boolean(localeHtml);
 const { Content } = useLocaleBody ? { Content: null } : await render(work);
 ---
 
-<BaseLayout lang={lang} title={workTitle(work, lang)} description={workSummary(work, lang)}>
+<BaseLayout lang={lang} title={workTitle(work, lang)} description={workSummary(work, lang)} brandMark={brandMark}>
   <article class={`section wrap fade-in prose prose-cols-${cols}`}>
     <div class="detail-hero">
       <img class="detail-icon" src={workIcon(work)} alt="" width="120" height="120" />

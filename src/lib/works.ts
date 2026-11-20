@@ -25,8 +25,17 @@ function publicAsset(assetPath: string, fallbackDir: string) {
 }
 
 export function workIcon(work: Work) {
-  if (work.data.icon) return publicAsset(work.data.icon, '/icons');
-  return `/icons/${workPathId(work)}.png`;
+  const src = work.data.icon
+    ? publicAsset(work.data.icon, '/icons')
+    : `/icons/${workPathId(work)}.png`;
+  // Bust CDN/browser cache when the file on disk changes (same path, new bytes).
+  if (src.startsWith('/') && !src.startsWith('//')) {
+    const abs = path.resolve('public', src.slice(1));
+    if (fs.existsSync(abs)) {
+      return `${src}?v=${Math.floor(fs.statSync(abs).mtimeMs)}`;
+    }
+  }
+  return src;
 }
 
 const SHOT_SKIP = /feature|header|search|icon|preview-|_raw-|aab$|apk$/i;
