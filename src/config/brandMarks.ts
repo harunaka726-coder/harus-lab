@@ -15,6 +15,7 @@ export const brandMarkBySlug: Record<string, string> = {
   'goo-choki-paa': '#8E8A86',
   henohenomoheji: '#18120E',
   'function-coloring': '#C27736',
+  'voronoi-photo-art': '#A8AB90',
 };
 
 export const defaultBrandMark = brandMarkBySlug['time-capsule-quiz'] ?? '#D85A3A';
