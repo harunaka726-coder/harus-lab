@@ -16,6 +16,7 @@ export const brandMarkBySlug: Record<string, string> = {
   henohenomoheji: '#18120E',
   'function-coloring': '#C27736',
   'voronoi-photo-art': '#A8AB90',
+  'akiyasurvival': '#000000',
 };
 
 export const defaultBrandMark = brandMarkBySlug['time-capsule-quiz'] ?? '#D85A3A';
